@@ -5,7 +5,7 @@ class BMICalculator extends StatefulWidget {
   const BMICalculator({super.key});
 
   @override
-  _BMICalculatorState createState() => _BMICalculatorState();
+  State<BMICalculator> createState() => _BMICalculatorState();
 }
 
 class _BMICalculatorState extends State<BMICalculator> {

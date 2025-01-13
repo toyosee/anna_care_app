@@ -8,7 +8,7 @@ class OutbreakTracker extends StatefulWidget {
   const OutbreakTracker({super.key});
 
   @override
-  _OutbreakTrackerState createState() => _OutbreakTrackerState();
+  State<OutbreakTracker> createState() => _OutbreakTrackerState();
 }
 
 class _OutbreakTrackerState extends State<OutbreakTracker> {
@@ -47,10 +47,15 @@ class _OutbreakTrackerState extends State<OutbreakTracker> {
             content: const Text(
                 'Error fetching information. Please check your internet connection.'),
             actions: [
-              TextButton(
+              ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pop();
+                  Navigator.pushReplacementNamed(context, '/dashboard');
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  foregroundColor: Theme.of(context).primaryColorLight
+                  ),
                 child: const Text('OK'),
               ),
             ],

@@ -112,10 +112,11 @@ class _DashboardState extends State<Dashboard> {
       {'icon': Icons.medical_services_rounded, 'label': 'Check Up', 'route': '/healthAdvisor'},
       {'icon': Icons.local_hospital, 'label': 'Health Tips', 'route': '/healthTips'},
       {'icon': Icons.crisis_alert_rounded, 'label': 'Covid-19 \nMonitor', 'route': '/outbreakTracker'},
-      {'icon': Icons.fitness_center, 'label': 'Fitness Tracker', 'route': '/fitness', 'comingSoon': true},
-      {'icon': Icons.schedule, 'label': 'Workout Scheduler', 'route': '/workoutScheduler', 'comingSoon': true},
-      {'icon': Icons.food_bank, 'label': 'Meal Planner', 'route': '/mealPlanner', 'comingSoon': true},
-      {'icon': Icons.bar_chart, 'label': 'Progress Tracker', 'route': '/progressTracker', 'comingSoon': true},
+      {'icon': Icons.timeline_rounded, 'label': 'Time Out', 'route': '/timeOut', 'comingSoon': false},
+      // {'icon': Icons.fitness_center, 'label': 'Fitness Tracker', 'route': '/fitness', 'comingSoon': true},
+      // {'icon': Icons.schedule, 'label': 'Workout Scheduler', 'route': '/workoutScheduler', 'comingSoon': true},
+      // {'icon': Icons.food_bank, 'label': 'Meal Planner', 'route': '/mealPlanner', 'comingSoon': true},
+      // {'icon': Icons.bar_chart, 'label': 'Progress Tracker', 'route': '/progressTracker', 'comingSoon': true},
     ];
 
     final screenWidth = MediaQuery.of(context).size.width;

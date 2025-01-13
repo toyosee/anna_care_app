@@ -1,20 +1,34 @@
 import 'package:anna_care/base_screen.dart';
 import 'package:anna_care/dashboard_screen.dart';
+import 'package:anna_care/providers/timeout_provider.dart';
 import 'package:anna_care/screens/fitness_screen.dart';
 import 'package:anna_care/screens/health_advisor_screen.dart';
 import 'package:anna_care/screens/health_tips_screen.dart';
 import 'package:anna_care/screens/home_screen.dart';
+import 'package:anna_care/screens/time_out_screen.dart';
 import 'package:anna_care/screens/workout_scheduller_screen.dart';
 import 'package:anna_care/screens/disease_outbreak_screen.dart';
 import 'package:anna_care/providers/disease_outbreak_provider.dart';
-import 'package:anna_care/providers/health_advisor_provider.dart'; // Import the provider
-import 'package:anna_care/providers/health_tips_provider.dart'; // Import the HealthTipsProvider
+import 'package:anna_care/providers/health_advisor_provider.dart';
+import 'package:anna_care/providers/health_tips_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart'; // Import provider package
+import 'package:permission_handler/permission_handler.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Request notification permission
+  await requestNotificationPermission();
+  
   runApp(const AnnaCareApp());
+}
+
+Future<void> requestNotificationPermission() async {
+  if (await Permission.notification.isDenied) {
+    await Permission.notification.request();
+  }
 }
 
 class AnnaCareApp extends StatelessWidget {
@@ -24,16 +38,10 @@ class AnnaCareApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => MedicalFormProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => HealthTipsProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => DiseaseOutbreakProvider(),
-        ),
-        // Add other providers here if needed
+        ChangeNotifierProvider(create: (_) => MedicalFormProvider()),
+        ChangeNotifierProvider(create: (_) => HealthTipsProvider()),
+        ChangeNotifierProvider(create: (_) => DiseaseOutbreakProvider()),
+        ChangeNotifierProvider(create: (_) => TimerProvider()), // No need to pass the plugin here
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -52,6 +60,7 @@ class AnnaCareApp extends StatelessWidget {
           '/bmi': (context) => BMICalculator(),
           '/fitness': (context) => FitnessPage(),
           '/healthTips': (context) => HealthTipsScreen(),
+          '/timeOut': (context) => TimeOutWidget(),
           '/workoutScheduler': (context) => WorkoutSchedulerPage(),
           '/healthAdvisor': (context) => MedicalFormScreen(),
           '/outbreakTracker': (context) => OutbreakTracker(),
