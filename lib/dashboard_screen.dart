@@ -113,6 +113,7 @@ class _DashboardState extends State<Dashboard> {
       {'icon': Icons.local_hospital, 'label': 'Health Tips', 'route': '/healthTips'},
       {'icon': Icons.crisis_alert_rounded, 'label': 'Covid-19 \nMonitor', 'route': '/outbreakTracker'},
       {'icon': Icons.timeline_rounded, 'label': 'Time Out', 'route': '/timeOut', 'comingSoon': false},
+      {'icon': Icons.emergency_rounded, 'label': 'First Aid Emergency', 'route': '/firstAidAndEmergency', 'comingSoon': false},
       // {'icon': Icons.fitness_center, 'label': 'Fitness Tracker', 'route': '/fitness', 'comingSoon': true},
       // {'icon': Icons.schedule, 'label': 'Workout Scheduler', 'route': '/workoutScheduler', 'comingSoon': true},
       // {'icon': Icons.food_bank, 'label': 'Meal Planner', 'route': '/mealPlanner', 'comingSoon': true},

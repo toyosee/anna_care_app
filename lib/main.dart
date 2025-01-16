@@ -1,6 +1,8 @@
 import 'package:anna_care/base_screen.dart';
 import 'package:anna_care/dashboard_screen.dart';
+import 'package:anna_care/providers/first_aid_and_emergency_provider.dart';
 import 'package:anna_care/providers/timeout_provider.dart';
+import 'package:anna_care/screens/emergency_response_screen.dart';
 import 'package:anna_care/screens/fitness_screen.dart';
 import 'package:anna_care/screens/health_advisor_screen.dart';
 import 'package:anna_care/screens/health_tips_screen.dart';
@@ -41,7 +43,8 @@ class AnnaCareApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => MedicalFormProvider()),
         ChangeNotifierProvider(create: (_) => HealthTipsProvider()),
         ChangeNotifierProvider(create: (_) => DiseaseOutbreakProvider()),
-        ChangeNotifierProvider(create: (_) => TimerProvider()), // No need to pass the plugin here
+        ChangeNotifierProvider(create: (_) => TimerProvider()),
+        ChangeNotifierProvider(create: (_) => FirstAidTipsProvider())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -64,6 +67,7 @@ class AnnaCareApp extends StatelessWidget {
           '/workoutScheduler': (context) => WorkoutSchedulerPage(),
           '/healthAdvisor': (context) => MedicalFormScreen(),
           '/outbreakTracker': (context) => OutbreakTracker(),
+          '/firstAidAndEmergency': (context) => EmergencyResponseScreen(),
         },
       ),
     );

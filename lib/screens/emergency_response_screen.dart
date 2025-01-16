@@ -1,10 +1,10 @@
+import 'package:anna_care/providers/first_aid_and_emergency_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/health_tips_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HealthTipsScreen extends StatelessWidget {
-  const HealthTipsScreen({super.key});
+class EmergencyResponseScreen extends StatelessWidget {
+  const EmergencyResponseScreen({super.key});
 
   Future<void> _launchUrl() async {
     final Uri url = Uri.parse('https://github.com/toyosee');
@@ -15,14 +15,14 @@ class HealthTipsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<HealthTipsProvider>(context);
+    final provider = Provider.of<FirstAidTipsProvider>(context);
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     bool isLandscape = screenWidth > screenHeight;
 
-    // Load health tips when the screen is built
+    // Load first aid tips when the screen is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      provider.loadHealthTips();
+      provider.loadFirstAidTips();
     });
 
     return Scaffold(
@@ -33,7 +33,7 @@ class HealthTipsScreen extends StatelessWidget {
             onPressed: _launchUrl,
           ),
         ],
-        title: const Text('Health Tips'),
+        title: const Text('Emergency Response'),
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Theme.of(context).primaryColorLight,
@@ -48,7 +48,7 @@ class HealthTipsScreen extends StatelessWidget {
             Row(
               children: [
                 Icon(
-                  Icons.health_and_safety_rounded,
+                  Icons.local_hospital_rounded,
                   size: 30,
                   color: Theme.of(context).primaryColor,
                   blendMode: BlendMode.multiply,
@@ -56,7 +56,7 @@ class HealthTipsScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Text(
-                    'Tips To Stay Healthy',
+                    'Emergency Tips',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -68,10 +68,10 @@ class HealthTipsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: provider.healthTips.isEmpty
+              child: provider.firstAidTips.isEmpty
                   ? Center(
                       child: Text(
-                        'No health tips available.',
+                        'No emergency tips available.',
                         style: TextStyle(
                           fontSize: 16,
                           color: Theme.of(context).primaryColor,
@@ -85,9 +85,9 @@ class HealthTipsScreen extends StatelessWidget {
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10,
                       ),
-                      itemCount: provider.healthTips.length,
+                      itemCount: provider.firstAidTips.length,
                       itemBuilder: (context, index) {
-                        final tip = provider.healthTips[index];
+                        final tip = provider.firstAidTips[index];
                         return GestureDetector(
                           onTap: () {
                             showModalBottomSheet(
@@ -101,7 +101,7 @@ class HealthTipsScreen extends StatelessWidget {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Health Tip!',
+                                          'Emergency Tip!',
                                           style: TextStyle(
                                             fontSize: 24,
                                             fontWeight: FontWeight.bold,
@@ -151,16 +151,16 @@ class HealthTipsScreen extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
-                                    tip.type == 'critical'
-                                        ? Icons.warning
-                                        : tip.type == 'success'
-                                            ? Icons.check_circle
-                                            : Icons.info,
-                                    color: tip.type == 'critical'
+                                    tip.category == 'emergency_contact'
+                                        ? Icons.phone
+                                        : tip.category == 'guidance'
+                                            ? Icons.info
+                                            : Icons.local_hospital,
+                                    color: tip.category == 'emergency_contact'
                                         ? Colors.red
-                                        : tip.type == 'success'
-                                            ? Colors.green
-                                            : Colors.blue,
+                                        : tip.category == 'guidance'
+                                            ? Colors.blue
+                                            : Colors.green,
                                     size: 30,
                                   ),
                                   const SizedBox(height: 10),
