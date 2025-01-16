@@ -162,9 +162,9 @@ class _BMICalculatorState extends State<BMICalculator> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Calculate Your BMI',
+                    'Check Your BMI',
                     style: TextStyle(
-                      fontSize: constraints.maxWidth * 0.07,
+                      fontSize: constraints.maxWidth * 0.06,
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).primaryColor,
                     ),

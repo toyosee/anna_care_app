@@ -103,7 +103,7 @@ class _OutbreakTrackerState extends State<OutbreakTracker> {
                     Text(
                       'Global Outbreak Summary',
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).primaryColor,
                       ),
@@ -218,36 +218,38 @@ class _OutbreakTrackerState extends State<OutbreakTracker> {
           aspectRatio: constraints.maxWidth > 600
               ? 2
               : 1.5, // Adjust aspect ratio based on device width
-          child: Card(
-            elevation: 8, // Added shadow for 3D effect
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(40.0),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 40,
-                  children: [
-                    Expanded(
-                      child: PieChart(
-                        PieChartData(
-                          sections: _buildPieChartSections(total),
-                          sectionsSpace: 2,
-                          centerSpaceRadius: 40,
-                          pieTouchData: PieTouchData(
-                            touchCallback:
-                                (FlTouchEvent event, pieTouchResponse) {},
+          child: Expanded(
+            child: Card(
+              elevation: 8, // Added shadow for 3D effect
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(40.0),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 40,
+                    children: [
+                      Expanded(
+                        child: PieChart(
+                          PieChartData(
+                            sections: _buildPieChartSections(total),
+                            sectionsSpace: 2,
+                            centerSpaceRadius: 40,
+                            pieTouchData: PieTouchData(
+                              touchCallback:
+                                  (FlTouchEvent event, pieTouchResponse) {},
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    if (constraints.maxWidth > 600) const SizedBox(width: 60),
-                    Expanded(
-                      child: _buildLegend(),
-                    ),
-                  ],
+                      if (constraints.maxWidth > 600) const SizedBox(width: 60),
+                      Expanded(
+                        child: _buildLegend(),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

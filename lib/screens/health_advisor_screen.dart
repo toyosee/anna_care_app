@@ -38,13 +38,23 @@ class MedicalFormScreen extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    'Findings',
-                    style: TextStyle(
-                      fontSize: constraints.maxWidth * 0.07,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 10,
+                    children: [
+                      Icon(
+                        Icons.assistant_rounded,
+                        color: Theme.of(context).primaryColor,
+                        ),
+                      Text(
+                        'Anna Assistant',
+                        style: TextStyle(
+                          fontSize: constraints.maxWidth * 0.06,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 20),
                   TextField(

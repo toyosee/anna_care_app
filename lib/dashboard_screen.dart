@@ -143,29 +143,10 @@ class _DashboardState extends State<Dashboard> {
         foregroundColor: Theme.of(context).primaryColorLight,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.health_and_safety_rounded,
-                  size: 30,
-                  color: Theme.of(context).primaryColor,
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  'Pick a tool to get started',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Theme.of(context).primaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
             GestureDetector(
               onTap: () => _showHealthTipDialog(healthTipOfTheDay?.message ?? ''),
               child: AnimatedOpacity(
@@ -203,6 +184,26 @@ class _DashboardState extends State<Dashboard> {
                   ),
                 ),
               ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.health_and_safety_rounded,
+                  size: 30,
+                  color: Theme.of(context).primaryColor,
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  'Pick a tool to get started',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 20),
             Expanded(
