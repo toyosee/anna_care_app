@@ -142,4 +142,13 @@ class FirstAidTipsProvider with ChangeNotifier {
         .toList();
     notifyListeners();
   }
+
+  // Filtering the List of maps
+  List<FirstAidTip> getFilteredTips(String filter) {
+    if (filter.isEmpty) {
+      return _firstAidTips;
+    } else {
+      return _firstAidTips.where((tip) => tip.category.contains(filter)).toList();
+    }
+  }
 }

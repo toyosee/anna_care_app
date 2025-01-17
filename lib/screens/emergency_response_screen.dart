@@ -3,8 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class EmergencyResponseScreen extends StatelessWidget {
+class EmergencyResponseScreen extends StatefulWidget {
   const EmergencyResponseScreen({super.key});
+
+  @override
+  State<EmergencyResponseScreen> createState() =>
+      _EmergencyResponseScreenState();
+}
+
+class _EmergencyResponseScreenState extends State<EmergencyResponseScreen> {
+  final TextEditingController _filterController = TextEditingController();
+  String _filter = '';
+
+  @override
+  void dispose() {
+    _filterController.dispose();
+    super.dispose();
+  }
 
   Future<void> _launchUrl() async {
     final Uri url = Uri.parse('https://github.com/toyosee');
@@ -24,6 +39,9 @@ class EmergencyResponseScreen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       provider.loadFirstAidTips();
     });
+
+    // Get filtered tips
+    final filteredTips = provider.getFilteredTips(_filter);
 
     return Scaffold(
       appBar: AppBar(
@@ -56,7 +74,7 @@ class EmergencyResponseScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Text(
-                    'Emergency Tips',
+                    'Emergency and First Aid Tips',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -66,9 +84,29 @@ class EmergencyResponseScreen extends StatelessWidget {
                 ),
               ],
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextField(
+              controller: _filterController,
+              decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Theme.of(context).primaryColor,
+                  ),
+                  
+                hintText: 'Filter by category (guidance, emergency, firstaid)',
+                border: OutlineInputBorder(),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _filter = value;
+                });
+              },
+            ),
             const SizedBox(height: 20),
             Expanded(
-              child: provider.firstAidTips.isEmpty
+              child: filteredTips.isEmpty
                   ? Center(
                       child: Text(
                         'No emergency tips available.',
@@ -80,14 +118,17 @@ class EmergencyResponseScreen extends StatelessWidget {
                     )
                   : GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: isLandscape ? 3 : 2, // 3 columns in landscape, 2 in portrait
-                        childAspectRatio: isLandscape ? 4 / 3 : 3 / 2, // Adjust aspect ratio
+                        crossAxisCount: isLandscape
+                            ? 3
+                            : 2, // 3 columns in landscape, 2 in portrait
+                        childAspectRatio:
+                            isLandscape ? 4 / 3 : 3 / 2, // Adjust aspect ratio
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10,
                       ),
-                      itemCount: provider.firstAidTips.length,
+                      itemCount: filteredTips.length,
                       itemBuilder: (context, index) {
-                        final tip = provider.firstAidTips[index];
+                        final tip = filteredTips[index];
                         return GestureDetector(
                           onTap: () {
                             showModalBottomSheet(
@@ -98,14 +139,16 @@ class EmergencyResponseScreen extends StatelessWidget {
                                     padding: const EdgeInsets.all(20.0),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'Emergency Tip!',
                                           style: TextStyle(
                                             fontSize: 24,
                                             fontWeight: FontWeight.bold,
-                                            color: Theme.of(context).primaryColor,
+                                            color:
+                                                Theme.of(context).primaryColor,
                                           ),
                                         ),
                                         const SizedBox(height: 10),
@@ -113,7 +156,8 @@ class EmergencyResponseScreen extends StatelessWidget {
                                           tip.message,
                                           style: TextStyle(
                                             fontSize: 18,
-                                            color: Theme.of(context).primaryColorDark,
+                                            color: Theme.of(context)
+                                                .primaryColorDark,
                                           ),
                                         ),
                                         const SizedBox(height: 10),
@@ -123,12 +167,14 @@ class EmergencyResponseScreen extends StatelessWidget {
                                               Navigator.pop(context);
                                             },
                                             style: ElevatedButton.styleFrom(
-                                              backgroundColor: Theme.of(context).primaryColor,
+                                              backgroundColor: Theme.of(context)
+                                                  .primaryColor,
                                             ),
                                             child: Text(
                                               'Close',
                                               style: TextStyle(
-                                                color: Theme.of(context).primaryColorLight,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
                                               ),
                                             ),
                                           ),

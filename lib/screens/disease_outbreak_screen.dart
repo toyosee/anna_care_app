@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
+// import 'package:fl_chart/fl_chart.dart';
 import 'package:anna_care/providers/disease_outbreak_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -73,6 +73,8 @@ class _OutbreakTrackerState extends State<OutbreakTracker> {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Covid-19 Monitor'),
@@ -151,7 +153,22 @@ class _OutbreakTrackerState extends State<OutbreakTracker> {
                       color: Colors.green,
                     ),
                     const SizedBox(height: 20),
-                    _buildDoughnutChart(),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: AspectRatio(
+                          aspectRatio: 1, // Adjust this value based on the desired aspect ratio of your image
+                          child: Image.asset(
+                            'assets/images/covidTips.png',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -210,151 +227,151 @@ class _OutbreakTrackerState extends State<OutbreakTracker> {
     );
   }
 
-  Widget _buildDoughnutChart() {
-    final total = data!['cases'] + data!['deaths'] + data!['recovered'];
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return AspectRatio(
-          aspectRatio: constraints.maxWidth > 600
-              ? 2
-              : 1.5, // Adjust aspect ratio based on device width
-          child: Expanded(
-            child: Card(
-              elevation: 8, // Added shadow for 3D effect
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(40.0),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    spacing: 40,
-                    children: [
-                      Expanded(
-                        child: PieChart(
-                          PieChartData(
-                            sections: _buildPieChartSections(total),
-                            sectionsSpace: 2,
-                            centerSpaceRadius: 40,
-                            pieTouchData: PieTouchData(
-                              touchCallback:
-                                  (FlTouchEvent event, pieTouchResponse) {},
-                            ),
-                          ),
-                        ),
-                      ),
-                      if (constraints.maxWidth > 600) const SizedBox(width: 60),
-                      Expanded(
-                        child: _buildLegend(),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
+  // Widget _buildDoughnutChart() {
+  //   final total = data!['cases'] + data!['deaths'] + data!['recovered'];
+  //   return LayoutBuilder(
+  //     builder: (context, constraints) {
+  //       return AspectRatio(
+  //         aspectRatio: constraints.maxWidth > 600
+  //             ? 2
+  //             : 1.5, // Adjust aspect ratio based on device width
+  //         child: Expanded(
+  //           child: Card(
+  //             elevation: 8, // Added shadow for 3D effect
+  //             shape: RoundedRectangleBorder(
+  //               borderRadius: BorderRadius.circular(15),
+  //             ),
+  //             child: Padding(
+  //               padding: const EdgeInsets.all(40.0),
+  //               child: Center(
+  //                 child: Row(
+  //                   mainAxisAlignment: MainAxisAlignment.center,
+  //                   spacing: 40,
+  //                   children: [
+  //                     Expanded(
+  //                       child: PieChart(
+  //                         PieChartData(
+  //                           sections: _buildPieChartSections(total),
+  //                           sectionsSpace: 2,
+  //                           centerSpaceRadius: 40,
+  //                           pieTouchData: PieTouchData(
+  //                             touchCallback:
+  //                                 (FlTouchEvent event, pieTouchResponse) {},
+  //                           ),
+  //                         ),
+  //                       ),
+  //                     ),
+  //                     if (constraints.maxWidth > 600) const SizedBox(width: 60),
+  //                     Expanded(
+  //                       child: _buildLegend(),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
-  List<PieChartSectionData> _buildPieChartSections(int total) {
-    return [
-      PieChartSectionData(
-        gradient: LinearGradient(
-          colors: [
-            Theme.of(context).primaryColor,
-            const Color.fromARGB(255, 0, 43, 79)
-          ],
-        ),
-        // color: Colors.orange,
-        value: (data!['cases'] / total) * 100,
-        title: '${((data!['cases'] / total) * 100).toStringAsFixed(1)}%',
-        radius: 50,
-        titleStyle: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Theme.of(context)
-              .primaryColorLight, // Changed font color to primary app color
-        ),
-      ),
-      PieChartSectionData(
-        color: Colors.red,
-        value: (data!['deaths'] / total) * 100,
-        title: '${((data!['deaths'] / total) * 100).toStringAsFixed(1)}%',
-        radius: 50,
-        titleStyle: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Theme.of(context).primaryColorLight,
-          shadows: List.filled(
-              2,
-              Shadow(
-                  blurRadius: 2,
-                  color:
-                      Colors.black)), // Changed font color to primary app color
-        ),
-      ),
-      PieChartSectionData(
-        gradient: LinearGradient(
-          colors: [
-            const Color.fromARGB(255, 3, 69, 5),
-            const Color.fromARGB(255, 3, 135, 8)
-          ],
-        ),
-        // color: Colors.green,
-        value: (data!['recovered'] / total) * 100,
-        title: '${((data!['recovered'] / total) * 100).toStringAsFixed(1)}%',
-        radius: 50,
-        titleStyle: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Theme.of(context)
-              .primaryColorLight, // Changed font color to primary app color
-        ),
-      ),
-    ];
-  }
+  // List<PieChartSectionData> _buildPieChartSections(int total) {
+  //   return [
+  //     PieChartSectionData(
+  //       gradient: LinearGradient(
+  //         colors: [
+  //           Theme.of(context).primaryColor,
+  //           const Color.fromARGB(255, 0, 43, 79)
+  //         ],
+  //       ),
+  //       // color: Colors.orange,
+  //       value: (data!['cases'] / total) * 100,
+  //       title: '${((data!['cases'] / total) * 100).toStringAsFixed(1)}%',
+  //       radius: 50,
+  //       titleStyle: TextStyle(
+  //         fontSize: 16,
+  //         fontWeight: FontWeight.bold,
+  //         color: Theme.of(context)
+  //             .primaryColorLight, // Changed font color to primary app color
+  //       ),
+  //     ),
+  //     PieChartSectionData(
+  //       color: Colors.red,
+  //       value: (data!['deaths'] / total) * 100,
+  //       title: '${((data!['deaths'] / total) * 100).toStringAsFixed(1)}%',
+  //       radius: 50,
+  //       titleStyle: TextStyle(
+  //         fontSize: 16,
+  //         fontWeight: FontWeight.bold,
+  //         color: Theme.of(context).primaryColorLight,
+  //         shadows: List.filled(
+  //             2,
+  //             Shadow(
+  //                 blurRadius: 2,
+  //                 color:
+  //                     Colors.black)), // Changed font color to primary app color
+  //       ),
+  //     ),
+  //     PieChartSectionData(
+  //       gradient: LinearGradient(
+  //         colors: [
+  //           const Color.fromARGB(255, 3, 69, 5),
+  //           const Color.fromARGB(255, 3, 135, 8)
+  //         ],
+  //       ),
+  //       // color: Colors.green,
+  //       value: (data!['recovered'] / total) * 100,
+  //       title: '${((data!['recovered'] / total) * 100).toStringAsFixed(1)}%',
+  //       radius: 50,
+  //       titleStyle: TextStyle(
+  //         fontSize: 16,
+  //         fontWeight: FontWeight.bold,
+  //         color: Theme.of(context)
+  //             .primaryColorLight, // Changed font color to primary app color
+  //       ),
+  //     ),
+  //   ];
+  // }
 
-  Widget _buildLegend() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _buildLegendItem(color: Theme.of(context).primaryColor, text: 'Cases'),
-        _buildLegendItem(color: Colors.red, text: 'Deaths'),
-        _buildLegendItem(
-            color: const Color.fromARGB(255, 3, 69, 5), text: 'Recovered'),
-      ],
-    );
-  }
+  // Widget _buildLegend() {
+  //   return Column(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       _buildLegendItem(color: Theme.of(context).primaryColor, text: 'Cases'),
+  //       _buildLegendItem(color: Colors.red, text: 'Deaths'),
+  //       _buildLegendItem(
+  //           color: const Color.fromARGB(255, 3, 69, 5), text: 'Recovered'),
+  //     ],
+  //   );
+  // }
 
-  Widget _buildLegendItem({required Color color, required String text}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: [
-          Container(
-            width: 16,
-            height: 16,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: color,
-            ),
-          ),
-          const SizedBox(width: 8),
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 16,
-              color: Theme.of(context)
-                  .primaryColor, // Changed font color to primary app color
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildLegendItem({required Color color, required String text}) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(vertical: 8.0),
+  //     child: Row(
+  //       children: [
+  //         Container(
+  //           width: 16,
+  //           height: 16,
+  //           decoration: BoxDecoration(
+  //             shape: BoxShape.circle,
+  //             color: color,
+  //           ),
+  //         ),
+  //         const SizedBox(width: 8),
+  //         Text(
+  //           text,
+  //           style: TextStyle(
+  //             fontSize: 16,
+  //             color: Theme.of(context)
+  //                 .primaryColor, // Changed font color to primary app color
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Future<void> _launchUrl() async {
     final Uri url = Uri.parse('https://github.com/toyosee');
